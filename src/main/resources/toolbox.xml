@@ -1,0 +1,8 @@
+<!--在这里定义一个date的类，html中可以引用这个类的方法，此处为时间格式化-->
+<toolbox>
+    <tool>
+        <key>date</key>
+        <scope>application</scope>
+        <class>org.apache.velocity.tools.generic.DateTool</class>
+    </tool>
+</toolbox>
