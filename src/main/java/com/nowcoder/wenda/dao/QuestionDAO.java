@@ -24,4 +24,8 @@ public interface QuestionDAO {
                                          @Param("offset") int offset,
                                          @Param("limit") int limit);
 
+    @Update({"UPDATE ",TABLE_NAME, " SET comment_count = #{commentCount} WHERE id = #{id}"})
+    int updateCommentCount(@Param("id") int id,
+                           @Param("commentCount") int commentCount);
+
 }

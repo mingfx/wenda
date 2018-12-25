@@ -32,4 +32,8 @@ public class QuestionService {
     public List<Question> getLatestQuestions(int userId, int offset, int limit){
         return questionDAO.selectLatestQuestions(userId,offset,limit);
     }
+
+    public boolean updateCommentCount(int questionId,int commentCount){
+        return questionDAO.updateCommentCount(questionId,commentCount)>0;
+    }
 }

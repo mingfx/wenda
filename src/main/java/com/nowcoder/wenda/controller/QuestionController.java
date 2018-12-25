@@ -1,7 +1,7 @@
 package com.nowcoder.wenda.controller;
 
-import com.nowcoder.wenda.model.HostHolder;
-import com.nowcoder.wenda.model.Question;
+import com.nowcoder.wenda.model.*;
+import com.nowcoder.wenda.service.CommentService;
 import com.nowcoder.wenda.service.QuestionService;
 import com.nowcoder.wenda.service.UserService;
 import com.nowcoder.wenda.util.WendaUtil;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -20,6 +22,9 @@ public class QuestionController {
 
     @Autowired
     QuestionService questionService;
+
+    @Autowired
+    CommentService commentService;
 
     @Autowired
     UserService userService;
@@ -61,6 +66,16 @@ public class QuestionController {
         Question question = questionService.selectById(qid);
         model.addAttribute("question",question);
         model.addAttribute("user",userService.getUser(question.getUserId()));
+        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        //评论显示时需要和user等信息关联起来，因此要使用ViewObject
+        List<ViewObject> comments = new ArrayList<ViewObject>();
+        for (Comment comment:commentList){
+            ViewObject vo = new ViewObject();
+            vo.set("comment",comment);
+            vo.set("user",userService.getUser(comment.getUserId()));
+            comments.add(vo);
+        }
+        model.addAttribute("comments",comments);
         return "detail";
     }
 }
