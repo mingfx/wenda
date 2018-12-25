@@ -36,4 +36,9 @@ public interface MessageDAO {
     int getConversationUnreadCount(@Param("userId") int userId,
                                    @Param("conversationId") String conversationId
                                    );
+
+    @Update({"UPDATE ",TABLE_NAME,
+            " SET has_read = 1 WHERE conversation_id = #{conversationId} AND to_id=#{userId}"})
+    int updateHasRead(@Param("conversationId") String conversationId,
+                      @Param("userId") int userId);
 }

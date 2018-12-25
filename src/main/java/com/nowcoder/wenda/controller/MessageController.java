@@ -60,6 +60,11 @@ public class MessageController {
     public String getConversationDetail(Model model,
                                         @RequestParam("conversationId") String conversationId){
         try {
+            if (hostHolder.getUser()==null){
+                return "redirect://reglogin";
+            }
+            int localUserId = hostHolder.getUser().getId();
+            messageService.updateHasReadStatus(conversationId,localUserId);
             List<Message> messageList = messageService.getConversationDetail(conversationId,0,10);
             List<ViewObject> messages = new ArrayList<ViewObject>();
             for (Message message:messageList){
