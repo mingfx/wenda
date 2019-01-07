@@ -53,13 +53,16 @@ public class MailSender implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         //授权码？？需要测试一下
         mailSender = new JavaMailSenderImpl();
-        mailSender.setUsername("810676596");
-        mailSender.setPassword("589972854fxm");
+        mailSender.setUsername("ming_fx@foxmail.com");
+        mailSender.setPassword("dqvvfwpyshudbfci");
         mailSender.setHost("smtp.qq.com");
-        mailSender.setPort(465);
-        mailSender.setProtocol("smtps");
+        //mailSender.setPort(465);
+       // mailSender.setProtocol("smtps");
         mailSender.setDefaultEncoding("utf8");
         Properties javaMailProperties = new Properties();
+        javaMailProperties.put("mail.smtp.auth", true);
+        javaMailProperties.put("mail.smtp.starttls.enable", true);
+        javaMailProperties.put("mail.smtp.timeout", 5000);
         javaMailProperties.put("mail.smtp.ssl.enable",true);
         mailSender.setJavaMailProperties(javaMailProperties);
     }
