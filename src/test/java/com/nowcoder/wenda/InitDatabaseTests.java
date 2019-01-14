@@ -2,8 +2,10 @@ package com.nowcoder.wenda;
 
 import com.nowcoder.wenda.dao.QuestionDAO;
 import com.nowcoder.wenda.dao.UserDAO;
+import com.nowcoder.wenda.model.EntityType;
 import com.nowcoder.wenda.model.Question;
 import com.nowcoder.wenda.model.User;
+import com.nowcoder.wenda.service.FollowService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +28,9 @@ public class InitDatabaseTests {
     @Autowired
     QuestionDAO questionDAO;
 
+    @Autowired
+    FollowService followService;
+
     @Test
     public void initDatabase() {
         Random random = new Random();
@@ -36,6 +41,10 @@ public class InitDatabaseTests {
             user.setPassword("");
             user.setSalt("");
             userDAO.addUser(user);
+
+            for (int j = 0; j < i; j++) {
+                followService.follow(j, EntityType.ENTITY_USER,i);
+            }
 
             user.setPassword("xxx");
             userDAO.updatePassword(user);

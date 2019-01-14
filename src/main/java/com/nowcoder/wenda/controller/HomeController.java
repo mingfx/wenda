@@ -1,7 +1,8 @@
 package com.nowcoder.wenda.controller;
 
-import com.nowcoder.wenda.model.Question;
-import com.nowcoder.wenda.model.ViewObject;
+import com.nowcoder.wenda.model.*;
+import com.nowcoder.wenda.service.CommentService;
+import com.nowcoder.wenda.service.FollowService;
 import com.nowcoder.wenda.service.QuestionService;
 import com.nowcoder.wenda.service.UserService;
 import org.slf4j.Logger;
@@ -23,11 +24,30 @@ public class HomeController {
     UserService userService;
     @Autowired
     QuestionService questionService;
+    @Autowired
+    FollowService followService;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    HostHolder hostHolder;
 
     @RequestMapping(path = {"/user/{userId}"},method = {RequestMethod.GET, RequestMethod.POST})
     public String userIndex(Model model, @PathVariable("userId") int userId) {
         model.addAttribute("vos",getQuestions(userId,0,10));
-        return "index";
+
+        User user = userService.getUser(userId);
+        ViewObject vo = new ViewObject();
+        vo.set("user",user);
+        vo.set("commentCount",commentService.getUserCommentCount(userId));
+        vo.set("followerCount",followService.getFollowerCount(EntityType.ENTITY_USER,userId));
+        vo.set("followeeCount",followService.getFolloweeCount(userId,EntityType.ENTITY_USER));
+        if (hostHolder.getUser() != null) {
+            vo.set("followed", followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_USER, userId));
+        } else {
+            vo.set("followed", false);
+        }
+        model.addAttribute("profileUser", vo);
+        return "profile";
     }
 
     @RequestMapping(path = {"/","/index"},method = {RequestMethod.GET, RequestMethod.POST})
@@ -44,6 +64,7 @@ public class HomeController {
         for(Question question:questionList){
             ViewObject vo = new ViewObject();
             vo.set("question",question);
+            vo.set("followCount",followService.getFollowerCount(EntityType.ENTITY_QUESTION,question.getId()));
             vo.set("user",userService.getUser(question.getUserId()));
             vos.add(vo);
         }
