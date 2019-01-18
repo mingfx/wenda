@@ -1,5 +1,8 @@
 package com.nowcoder.wenda.controller;
 
+import com.nowcoder.wenda.async.EventModel;
+import com.nowcoder.wenda.async.EventProducer;
+import com.nowcoder.wenda.async.EventType;
 import com.nowcoder.wenda.model.Comment;
 import com.nowcoder.wenda.model.EntityType;
 import com.nowcoder.wenda.model.HostHolder;
@@ -30,6 +33,9 @@ public class CommentController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     @RequestMapping(path = {"/addComment"},method = {RequestMethod.POST})
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content){
@@ -50,6 +56,9 @@ public class CommentController {
             //增加评论后要更新question表里的comment_count信息。但是这么更新是不合规范的，要么构成事务，要么异步更新
             int count = commentService.getCommentCount(comment.getEntityId(),comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(),count);
+
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(hostHolder.getUser().getId())
+                    .setEntityType(EntityType.ENTITY_QUESTION).setEntityId(questionId));
         } catch (Exception e) {
             logger.error("增加评论失败"+e.getMessage());
         }
