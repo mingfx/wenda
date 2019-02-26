@@ -20,7 +20,7 @@ import java.util.Random;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WendaApplication.class)
-@Sql("/init-schema.sql")
+//@Sql("/init-schema.sql")
 public class InitDatabaseTests {
     @Autowired
     UserDAO userDAO;

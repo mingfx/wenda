@@ -133,10 +133,10 @@ public class SensitiveService implements InitializingBean {
         return result.toString();
     }
 
-    public static void main(String[] argv){
-        SensitiveService sensitiveService = new SensitiveService();
-        sensitiveService.addWord("色情");
-        sensitiveService.addWord("赌博");
-        System.out.println(sensitiveService.filter("hi  你好色 情"));
-    }
+//    public static void main(String[] argv){
+//        SensitiveService sensitiveService = new SensitiveService();
+//        sensitiveService.addWord("色情");
+//        sensitiveService.addWord("赌博");
+//        System.out.println(sensitiveService.filter("hi  你好色 情"));
+//    }
 }
