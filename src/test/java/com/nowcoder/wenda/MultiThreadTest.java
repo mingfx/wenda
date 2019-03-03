@@ -274,12 +274,12 @@ public class MultiThreadTest {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
-        //testSynchronized();
-        //testBlockingQueue();
-        //testThreadLocal();
-        //testExecutor();
-        //testAtomic();
-        testFuture();
-    }
+//    public static void main(String[] args) {
+//        //testSynchronized();
+//        //testBlockingQueue();
+//        //testThreadLocal();
+//        //testExecutor();
+//        //testAtomic();
+//        testFuture();
+//    }
 }
